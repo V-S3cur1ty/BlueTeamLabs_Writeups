@@ -161,17 +161,11 @@ The table below summary callback actions of the attacker:
 
 ## Summary of Findings
 
----
-
 The PCAP analysis identified the attacker's IP address as 14.0.0.120, which performed port scanning and web directory enumeration using Gobuster 3.6. The attacker accessed the Tomcat administrative interface on port 8080 using credentials admin:tomcat, then uploaded a WAR file named JXQOZY.war. Further analysis revealed an initial reverse shell connection over port 80 and a cron job configured to establish a persistent callback to 14.0.0.120:443.
 
 ## Conclusion
 
----
-
 The investigation revealed a potential compromise of the web server through its administrative interface, followed by malicious file upload, remote shell access, and an attempt to maintain persistence. The findings provide useful indicators for further investigation and incident response.
 # Completion
-
----
 
 <img src="./images/media/image15.png" style="width:1667;height:933" />
