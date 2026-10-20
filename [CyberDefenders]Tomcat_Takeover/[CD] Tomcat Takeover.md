@@ -49,6 +49,7 @@ In the packet No. 20126, the attacker sent GET request to /admin resource. After
 Question 4: Following the discovery of open ports on our server, it appears that the attacker attempted to enumerate and uncover directories and files on our web server. Which tools can you identify from the analysis that assisted the attacker in this enumeration process?
 
 To see what tools the attacker used during enumeration process, we filter http traffic and view in the User-Agent field. A User-Agent field (or User-Agent HTTP header) is a small line of text that a client—such as a web browser, mobile app, or scraper bot—sends to a web server with every HTTP request.
+
 <img src="./images/media/image11.png" style="width:6.26772in;height:2.75in" />
 
 Figure 5:  HTTP User-Agent field showing the enumeration tool used by the attacker
