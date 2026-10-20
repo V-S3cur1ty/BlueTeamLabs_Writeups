@@ -163,4 +163,4 @@ The table below summary callback actions of the attacker:
 
 ---
 
-<img src="./images/media/image15.png" style="width:6.26772in;height:2.375in" />
+<img src="./images/media/image15.png" style="width:1667;height:933" />
