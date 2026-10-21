@@ -92,7 +92,9 @@ Figure 6:
 
 As shown in figure 6, beside the ADMIN\$, there are also IPC\$. This is commonly network shared for establishing Command & Control Channel. After PsExec uploads the service binary through the ADMIN\$ share, it relies on IPC\$ as the communication channel to send commands, stream standard input/output (stdin, stdout, stderr), and receive execution results back from the remote host.
 
-We also have another records display stdin, stdout, stderr. As the result, this is strong indicators to identify the network share used to communicate between the two machines is IPC\$.<img src="./images/media/image6.png" style="width:6.26772in;height:2.88889in" />
+We also have another records display stdin, stdout, stderr. As the result, this is strong indicators to identify the network share used to communicate between the two machines is IPC\$.
+
+<img src="./images/media/image6.png" style="width:6.26772in;height:2.88889in" />
 
 Figure 7:
 
@@ -114,10 +116,10 @@ Focus on that machine and check the authentication packets:
 
 =\> hostname of the second machine: **MARKETING-PC**
 
-**COMPLETION:**
+# COMPLETION:
 
 <img src="./images/media/image2.png" style="width:6.26772in;height:3.40278in" />
 
-REFERENCES:
+# REFERENCES:
 
 \[1\] [<u>https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/b99264a6-7520-4563-adaf-fc4fdf7d5a1b</u>](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/b99264a6-7520-4563-adaf-fc4fdf7d5a1b)
