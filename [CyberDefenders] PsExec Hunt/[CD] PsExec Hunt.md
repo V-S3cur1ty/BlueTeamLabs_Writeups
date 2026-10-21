@@ -50,13 +50,13 @@ The target machine sends the NTLMSSP Challenge to securely verify the client's i
 
 See more details about this protocol in \[1\]
 
-Question 3: Knowing the username of the account the attacker used for authentication will give us insights into the extent of the breach. What is the username utilized by the attacker for authentication?
+**Question 3:** Knowing the username of the account the attacker used for authentication will give us insights into the extent of the breach. What is the username utilized by the attacker for authentication?
 
 From the figure 3, we can see the attacker is using the username “ssales” for authentication in the packet no. 132.
 
 =\> Answer: sales
 
-Question 4: After figuring out how the attacker moved within our network, we need to know what they did on the target machine. What's the name of the service executable the attacker set up on the target?
+**Question 4:** After figuring out how the attacker moved within our network, we need to know what they did on the target machine. What's the name of the service executable the attacker set up on the target?
 
 <img src="./images/media/image1.png" style="width:6.26772in;height:1.09722in" />
 
