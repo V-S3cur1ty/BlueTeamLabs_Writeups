@@ -1,10 +1,10 @@
-Scenario: You are provided with Sysmon logs from a compromised endpoint. Analyse the logs to find out the steps and techniques used by the attacker.
+**Scenario:** You are provided with Sysmon logs from a compromised endpoint. Analyse the logs to find out the steps and techniques used by the attacker.
 
 First, I’ll check how many events in the sysmon log file by using jq tool to operate with json file easier:
 
 <img src="./images/media/image3.png" style="width:6.26772in;height:1.30556in" />
 
-Figure 1:
+*Figure 1:*
 
 As shown in Figure 1, events were sorted by frequency of occurrence. We have several common events must to know when conducting an investigation:
 
@@ -246,7 +246,7 @@ Two notable ports were identified within the executed command:
 
 # <img src="./images/media/image10.png" style="width:6.26772in;height:4.51389in" /> 
 
-REFERENCES:
+# REFERENCES:
 
 \[1\] Sysmon Event ID 11: [<u>https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011</u>](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011)
 
