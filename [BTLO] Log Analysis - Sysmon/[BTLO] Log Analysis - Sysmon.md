@@ -4,7 +4,7 @@ First, I’ll check how many events in the sysmon log file by using jq tool to o
 
 <img src="./images/media/image3.png" style="width:6.26772in;height:1.30556in" />
 
-*Figure 1:*
+*Figure 1: Count of events on the sysmon log*
 
 As shown in Figure 1, events were sorted by frequency of occurrence. We have several common events must to know when conducting an investigation:
 
@@ -12,7 +12,7 @@ As shown in Figure 1, events were sorted by frequency of occurrence. We have sev
 
 <img src="./images/media/image5.png" style="width:6.26772in;height:3.94444in" />
 
-*Figure 2:*
+*Figure 2: Sysmon Event ID 11 information*
 
 Follow the document \[1\], the File Create event is specially useful to know whether the attacker dropped any payloads in user-writable or hidden directories like C:\Users\\Name\>\AppData\Local\Temp, or dropped malicious scripts, shortcuts, or binaries into Windows Startup folders,... In Figure 1, we have 815 events that have ID 11 and it is the most frequent event.
 
@@ -20,7 +20,7 @@ Follow the document \[1\], the File Create event is specially useful to know whe
 
 <img src="./images/media/image7.png" style="width:6.26772in;height:4.36111in" />
 
-*Figure 3:*
+*Figure 3: Sysmon Event ID 1 information*
 
 The event Process creation helps Security Analyst in detecting suspicious processes spawned by an executable file.
 
@@ -31,7 +31,7 @@ The event Process creation helps Security Analyst in detecting suspicious proces
 
 <img src="./images/media/image4.png" style="width:6.26772in;height:2.75in" />
 
-*Figure 4:*
+*Figure 4: Sysmon Event ID 3 information*
 
 A network connection detected event (in this case is [<u>Sysmon Event ID 3</u>](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?source=Sysmon&eventID=3))) helps a security analyst track, investigate, and stop malicious network activity at the endpoint level by linking raw network traffic directly to specific system processes and users.
 
@@ -41,7 +41,7 @@ Next step, I’ll extract information about the created file by the attacker on 
 
 <img src="./images/media/image2.png" style="width:6.26772in;height:0.73611in" />
 
-*Figure 5:*
+*Figure 5: Created files from the Event ID 11*
 
 The command to run:
 
@@ -62,13 +62,13 @@ Search supply.exe term in the log file, we can see full event:
 
 <img src="./images/media/image14.png" style="width:6.26772in;height:3.25in" />
 
-*Figure 6:*
+*Figure 6: A specific suspicious downloading action*
 
 As shown in figure 6, we can see the notable point in the CommandLine field. This file was downloaded from an address 192.168.1.11:6969 using powershell. Since the attacker usually downloads and sets up malicious payloads through command line, so I will focus on process creation events to extract the commands that may download or execute the payload.
 
 <img src="./images/media/image12.png" style="width:6.26772in;height:2.84722in" />
 
-*Figure 7:*
+*Figure 7: Pointing COMSPEC environment variable to suspicious file*
 
 Breakdown of the command just executed in figure 7:
 
@@ -88,7 +88,7 @@ This is full log event details of COMPSEC hijacking behavior:
 
 <img src="./images/media/image13.png" style="width:6.26772in;height:3.54167in" />
 
-*Figure 8:*
+*Figure 8: Detail of the changing COMSPEC action*
 
 There is a little weird in the parent process: ParentCommandline used cmd.exe in the system32 folder, but the path of ParentImage was in SysWOW64.
 
@@ -111,11 +111,11 @@ Go back to the first events related process creation, we have the suspicious pro
 
 <img src="./images/media/image8.png" style="width:6.26772in;height:1.93056in" />
 
-*Figure 9:*
+*Figure 9: Finding initial payload gave access to the attacker*
 
 <img src="./images/media/image9.png" style="width:6.26772in;height:2.875in" />
 
-*Figure 10:*
+*Figure 10: The event showing how the initial payload installed*
 
 Sysmon Event ID 15 = FileCreateStreamHash. Sysmon logs it when a file is created (or downloaded) that carries an alternate data stream (ADS), and it records a hash of that stream’s contents. The one ADS Sysmon watches closely is Zone.Identifier, which Windows adds to files downloaded from the internet. This is the “Mark of the Web” (MOTW).
 
@@ -125,7 +125,7 @@ Sysmon Event ID 15 = FileCreateStreamHash. Sysmon logs it when a file is created
 
 <img src="./images/media/image11.png" style="width:6.26772in;height:3.01389in" />
 
-*Figure 11:*
+*Figure 11: Identifying the source in which the initial payload come form*
 
 The part after the second colon is the alternate data stream name. Windows wrote a Zone.Identifier stream onto updater.hta, and this time Sysmon captured its contents:
 
@@ -182,7 +182,9 @@ This is the moment ftp.exe gets launched. Per the mechanism explained earlier �
 jq -r 'select(.Event.System.EventID==11) \| select(.Event.EventData.Image \| test("supply.exe")) \| .Event.EventData.TargetFilename' sysmon-events.json
 
 I also want to find the programming language used in the malware. I will find signature of the payload to know what language is it written:  
-<img src="./images/media/image15.png" style="width:6.26772in;height:3.625in" />*Figure 12:*
+<img src="./images/media/image15.png" style="width:6.26772in;height:3.625in" />
+
+*Figure 12: Identifying programming languague of the supply.exe payload*
 
 1\. The \_MEI prefix is the single strongest clue.  
 \_MEI is the signature temp-folder naming pattern created by PyInstaller — a tool that packages a Python script (plus the Python interpreter itself and all its dependencies) into a single standalone .exe. "MEI" stands for "Meta Executable Installer," PyInstaller's internal bootloader mechanism. Every time a PyInstaller-built executable runs, it extracts itself into a fresh \_MEI###### folder in Temp before executing — which is exactly the repeating pattern you're seeing (a new randomly-numbered \_MEI folder practically every single time supply.exe was launched).
@@ -206,7 +208,7 @@ It's the same relationship as, say, GCC or Clang are to C/C++ on Linux — diffe
 
 <img src="./images/media/image6.png" style="width:6.26772in;height:4.01389in" />
 
-*Figure 13:*
+*Figure 13: Python document help identifying programming language was used*
 
 Read more in \[6\]
 
@@ -216,7 +218,7 @@ CPython 2.7 (the official Python 2.7 interpreter) was itself built using Visual 
 
 <img src="./images/media/image1.png" style="width:6.26772in;height:0.45833in" />
 
-*Figure 14:*
+*Figure 14: The full command get reverse shell*
 
 Finally, I will identify the port the attacker attempts to get reverse shell
 
